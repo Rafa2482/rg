@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Carteira</title>
+
+<style>
+
+/* =========================
+   CONFIGURAÇÕES GERAIS
+========================= */
+
+*{
+    box-sizing: border-box;
+}
+
+html, body{
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    background: #eeeeee;
+    color: #181818;
+    padding-bottom: 100px;
+}
+
+
+/* =========================
+   TOPO
+========================= */
+
+.topo{
+    height: 82px;
+    background: #ffffff;
+
+    display: flex;
+    align-items: center;
+
+    padding: 16px 20px 0;
+
+    font-size: 21px;
+    font-weight: 400;
+}
+
+
+/* =========================
+   CONTEÚDO
+========================= */
+
+.container{
+    padding: 32px 20px 20px;
+}
+
+.titulo{
+    font-size: 20px;
+    font-weight: 700;
+
+    margin: 0 0 20px 0;
+}
+
+
+/* =========================
+   CARD DO RG
+========================= */
+
+.card{
+    width: 100%;
+    min-height: 150px;
+
+    background: #ffffff;
+
+    border-radius: 8px;
+
+    padding: 20px 17px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+.card:active{
+    opacity: 0.85;
+}
+
+
+/* =========================
+   CONTEÚDO DO CARD
+========================= */
+
+.info{
+    display: flex;
+    align-items: center;
+
+    min-width: 0;
+}
+
+
+/* =========================
+   CÍRCULO DA BANDEIRA
+========================= */
+
+.foto-doc{
+    width: 55px;
+    height: 55px;
+
+    min-width: 55px;
+
+    margin-right: 18px;
+
+    border-radius: 50%;
+
+    background: #eeeeee;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+
+/* BANDEIRA DENTRO DO CÍRCULO */
+
+.foto-doc img{
+    width: 65%;
+    height: 65%;
+
+    object-fit: contain;
+    object-position: center;
+}
+
+
+/* =========================
+   TEXTOS
+========================= */
+
+.textos{
+    min-width: 0;
+}
+
+
+/* RG - Registro Geral */
+
+.tipo{
+    font-size: 18px;
+    font-weight: 400;
+
+    line-height: 1.2;
+
+    margin-bottom: 13px;
+
+    white-space: nowrap;
+}
+
+
+/* NOME */
+
+.nome{
+    font-size: 18px;
+    font-weight: 400;
+
+    line-height: 1.45;
+
+    letter-spacing: 0;
+}
+
+
+/* NÚMERO */
+
+.numero{
+    font-size: 16px;
+
+    font-weight: 400;
+
+    color: #555555;
+
+    margin-top: 8px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================
+   SETA
+========================= */
+
+.seta{
+    font-size: 35px;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-weight: 300;
+
+    line-height: 1;
+
+    margin-left: 8px;
+
+    color: #383838;
+}
+
+
+/* =========================
+   BOTÃO ADICIONAR
+========================= */
+
+.adicionar{
+    width: 100%;
+    height: 65px;
+
+    margin-top: 22px;
+
+    border: 2px solid #0d4c70;
+
+    border-radius: 12px;
+
+    background: #ffffff;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    color: #0d4c70;
+
+    font-size: 19px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    -webkit-tap-highlight-color: transparent;
+}
+
+
+/* + */
+
+.mais{
+    font-size: 34px;
+
+    font-weight: 300;
+
+    line-height: 1;
+}
+
+
+/* =========================
+   MENU INFERIOR
+========================= */
+
+.bottom{
+    position: fixed;
+
+    left: 0;
+    bottom: 0;
+
+    width: 100%;
+
+    height: 92px;
+
+    background: #ffffff;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    align-items: center;
+
+    z-index: 1000;
+}
+
+
+/* ITENS DO MENU */
+
+.menu-item{
+    width: 33.333%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 6px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+/* ATIVO */
+
+.menu-item.ativo{
+    color: #0d4c70;
+}
+
+
+/* INATIVO */
+
+.menu-item.inativo{
+    color: #aaaaaa;
+}
+
+
+/* =========================
+   ÍCONES
+========================= */
+
+.icone{
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+}
+
+
+/* CARTEIRA */
+
+.wallet-icon{
+    width: 34px;
+
+    height: 25px;
+
+    border-radius: 6px;
+
+    background: #0d4c70;
+
+    position: relative;
+}
+
+.wallet-icon::after{
+    content: "";
+
+    position: absolute;
+
+    left: 5px;
+    right: 5px;
+
+    top: 7px;
+
+    height: 3px;
+
+    background: white;
+
+    border-radius: 10px;
+
+    transform: rotate(7deg);
+}
+
+
+/* SERVIÇOS */
+
+.tag-icon{
+    width: 24px;
+
+    height: 24px;
+
+    border: 3px solid #aaaaaa;
+
+    border-radius: 4px 9px 4px 4px;
+
+    transform: rotate(45deg);
+
+    position: relative;
+}
+
+.tag-icon::after{
+    content: "";
+
+    width: 5px;
+
+    height: 5px;
+
+    border: 2px solid #aaaaaa;
+
+    border-radius: 50%;
+
+    position: absolute;
+
+    top: 2px;
+    left: 2px;
+}
+
+
+/* OPÇÕES */
+
+.menu-icon{
+    width: 31px;
+
+    height: 23px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: space-between;
+}
+
+.menu-icon span{
+    display: block;
+
+    width: 100%;
+
+    height: 3px;
+
+    background: #aaaaaa;
+}
+
+
+/* =========================
+   TELAS MUITO PEQUENAS
+========================= */
+
+@media (max-width: 370px){
+
+    .container{
+        padding-left: 16px;
+        padding-right: 16px;
+    }
+
+    .card{
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .foto-doc{
+        width: 49px;
+        height: 49px;
+
+        min-width: 49px;
+
+        margin-right: 14px;
+    }
+
+    .tipo{
+        font-size: 16px;
+    }
+
+    .nome{
+        font-size: 16px;
+    }
+
+    .numero{
+        font-size: 14px;
+    }
+
+    .seta{
+        font-size: 30px;
+    }
+}
+
+</style>
+
+</head>
+
+<link rel="manifest" href="./manifest.webmanifest">
+
+<meta name="theme-color" content="#1f4e6b">
+
+<link rel="apple-touch-icon" href="./icon-192.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Demo">
+
+<body>
+
+
+
+<!-- =====================
+     CABEÇALHO
+===================== -->
+
+<header class="topo">
+
+    Carteira
+
+</header>
+
+
+<!-- =====================
+     CONTEÚDO
+===================== -->
+
+<main class="container">
+
+
+    <div class="titulo">
+
+        Válidas
+
+    </div>
+
+
+    <!-- CARD RG -->
+
+    <div
+        class="card"
+        onclick="abrirDocumento()"
+    >
+
+
+        <div class="info">
+
+
+            <!-- CÍRCULO / BANDEIRA -->
+
+            <div class="foto-doc">
+
+                <img
+                    src="rafael.jpg"
+                    alt="São Paulo"
+                >
+
+            </div>
+
+
+            <!-- INFORMAÇÕES -->
+
+            <div class="textos">
+
+
+                <div class="tipo">
+
+                    RG - Registro Geral
+
+                </div>
+
+
+                <div class="nome">
+
+                    FERNANDA ROCHA<br>
+                    MARCOS
+
+                </div>
+
+
+                <div class="numero">
+
+                    Número: 54.366.394-2
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- SETA -->
+
+        <div class="seta">
+
+            ›
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- BOTÃO ADICIONAR -->
+
+    <div class="adicionar">
+
+        <span class="mais">
+
+            +
+
+        </span>
+
+
+        <span>
+
+            Adicionar carteira
+
+        </span>
+
+    </div>
+
+
+</main>
+
+
+
+<!-- =====================
+     MENU INFERIOR
+===================== -->
+
+<nav class="bottom">
+
+
+    <!-- CARTEIRA -->
+
+    <div class="menu-item ativo">
+
+
+        <div class="icone">
+
+            <div class="wallet-icon"></div>
+
+        </div>
+
+
+        <div>
+
+            Carteira
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- SERVIÇOS -->
+
+    <div class="menu-item inativo">
+
+
+        <div class="icone">
+
+            <div class="tag-icon"></div>
+
+        </div>
+
+
+        <div>
+
+            Serviços
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- OPÇÕES -->
+
+    <div class="menu-item inativo">
+
+
+        <div class="icone">
+
+            <div class="menu-icon">
+
+                <span></span>
+
+                <span></span>
+
+                <span></span>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            Opções
+
+        </div>
+
+
+    </div>
+
+
+</nav>
+
+
+
+<!-- =====================
+     JAVASCRIPT
+===================== -->
+
+<script>
+
+function abrirDocumento(){
+
+    window.location.href = "detalhe.html";
+
+}
+
+</script>
+
+
+<button class="install-demo" id="installDemo" hidden>Instalar demonstração</button>
+<script>let installPrompt;const ib=document.getElementById("installDemo");window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;if(ib)ib.hidden=false;});if(ib)ib.addEventListener("click",async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;ib.hidden=true;});</script>
+</body>
+</html>

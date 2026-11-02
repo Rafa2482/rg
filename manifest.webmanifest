@@ -1,0 +1,23 @@
+{
+  "id": "./",
+  "name": "Aplicativo Demonstrativo",
+  "short_name": "Demo",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eeeeee",
+  "theme_color": "#1f4e6b",
+  "description": "Aplicativo demonstrativo, sem validade oficial.",
+  "icons": [
+    {
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

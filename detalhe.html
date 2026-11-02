@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    
+    <link rel="manifest" href="./manifest.webmanifest">
+
+<meta name="theme-color" content="#1f4e6b">
+
+<link rel="apple-touch-icon" href="./icon-192.png">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Demo">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    
+    <title>Carteira Digital</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Carteira">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            --azul-escuro: #1f4e6b;
+            --bg-cinza: #f2f2f2;
+        }
+
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background: var(--bg-cinza);
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        .topo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: calc(15px + env(safe-area-inset-top)) 16px 15px;
+            background: #f7f7f7;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .tabs {
+            display: flex;
+            background: white;
+            border-bottom: 2px solid #ddd;
+        }
+
+        .tabs div {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .ativo {
+            border-bottom: 3px solid var(--azul-escuro);
+            color: black !important;
+        }
+
+        /* 🔥 AJUSTE FINAL */
+        
+        .foto-doc {
+    width: calc(100% - 6px);
+    height: 68vh;
+    margin: 4px auto;
+    overflow: hidden;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    position: relative;
+        }
+
+        .slide {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            will-change: transform;
+        }
+
+        .slide img {
+            width: 33.333%;
+            height: 100%;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        .qr {
+            width: 33.333%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        #qrcode {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        #qrcode canvas, #qrcode img {
+            width: 95% !important;
+            max-width: 380px;
+            border: 4px solid white;
+            background: white;
+        }
+
+        .barra-container {
+            width: 85%;
+            height: 8px;
+            background: #eee;
+            margin-top: 15px;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progresso {
+            height: 100%;
+            width: 100%;
+            background: var(--azul-escuro);
+        }
+
+        .timer {
+            margin-top: 8px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .info-caixa {
+            margin-top: 10px;
+            font-size: 12px;
+            width: 85%;
+            text-align: center;
+            background: #e6f2ff;
+            border: 1px solid var(--azul-escuro);
+            border-radius: 6px;
+            padding: 10px;
+            color: var(--azul-escuro);
+        }
+
+        .atualizacao {
+            text-align: center;
+            font-size: 12px;
+            color: #888;
+            margin-top: 8px;
+        }
+
+        .bottom {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            background: white;
+            padding: calc(15px + env(safe-area-inset-bottom)) 0;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+    <div class="topo">
+        <div>←</div>
+        <div>Carteira</div>
+        <div>⋮</div>
+    </div>
+
+    <div class="tabs">
+        <div id="t0" class="ativo" onclick="ir(0)">Frente</div>
+        <div id="t1" onclick="ir(1)">Verso</div>
+        <div id="t2" onclick="ir(2)">QR Code</div>
+    </div>
+
+    <div class="foto-doc demo-watermark" id="area">
+        <div class="slide" id="slide">
+            <img src="frente.jpg">
+            <img src="verso.jpg">
+            <div class="qr">
+                <div id="qrcode"></div>
+                <div class="barra-container"><div class="progresso" id="barra"></div></div>
+                <div class="timer" id="timer">01 : 00</div>
+                <div class="info-caixa">QR CODE ILUSTRATIVO — NÃO REALIZA VALIDAÇÃO OFICIAL.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="atualizacao">Última atualização: 08/03/26 - 21:18</div>
+
+    <div class="bottom">
+        <div style="color:var(--azul-escuro); font-weight:bold;">Carteira</div>
+        <div>Serviços</div>
+        <div>Opções</div>
+    </div>
+
+<script>
+const slide = document.getElementById("slide");
+const area = document.getElementById("area");
+let largura = area.offsetWidth;
+
+let pagina = 0;
+let xInicial = 0;
+let arrastando = false;
+let tempoInicio = 0;
+
+function atualizarUI() {
+    for (let i = 0; i < 3; i++) {
+        document.getElementById("t" + i).className = (i === pagina) ? "ativo" : "";
+    }
+}
+
+function ir(p) {
+    pagina = p;
+    slide.style.transition = "transform 0.3s ease-out";
+    slide.style.transform = `translateX(${-pagina * 33.333}%)`;
+    atualizarUI();
+}
+
+area.addEventListener("touchstart", (e) => {
+    xInicial = e.touches[0].clientX;
+    tempoInicio = Date.now();
+    slide.style.transition = "none";
+    arrastando = true;
+});
+
+area.addEventListener("touchmove", (e) => {
+    if (!arrastando) return;
+    const xAtual = e.touches[0].clientX;
+    const diffX = xAtual - xInicial;
+
+    const basePos = -(pagina * largura);
+    const moverPara = basePos + diffX;
+    const porcentagem = (moverPara / (largura * 3)) * 100;
+
+    slide.style.transform = `translateX(${porcentagem}%)`;
+});
+
+area.addEventListener("touchend", (e) => {
+    arrastando = false;
+    const xFinal = e.changedTouches[0].clientX;
+    const diffX = xFinal - xInicial;
+    const duracao = Date.now() - tempoInicio;
+
+    if (Math.abs(diffX) > largura * 0.2 || (duracao < 250 && Math.abs(diffX) > 30)) {
+        if (diffX < 0 && pagina < 2) pagina++;
+        else if (diffX > 0 && pagina > 0) pagina--;
+    }
+    ir(pagina);
+});
+
+function gerarQR() {
+    const container = document.getElementById("qrcode");
+    container.innerHTML = "";
+    new QRCode(container, {
+        text: "ID-" + Math.random().toString(36).substring(2, 11).toUpperCase(),
+        width: 512,
+        height: 512
+    });
+}
+
+gerarQR();
+
+let t = 60;
+setInterval(() => {
+    document.getElementById("timer").innerHTML = `00 : ${String(t).padStart(2, '0')}`;
+    document.getElementById("barra").style.width = (t / 60) * 100 + "%";
+    if (t-- <= 0) { t = 60; gerarQR(); }
+}, 1000);
+
+window.addEventListener("resize", () => { largura = area.offsetWidth; ir(pagina); });
+</script>
+
+<button class="install-demo" id="installDemo" hidden>Instalar demonstração</button>
+<script>let installPrompt;const ib=document.getElementById("installDemo");window.addEventListener("beforeinstallprompt",e=>{e.preventDefault();installPrompt=e;if(ib)ib.hidden=false;});if(ib)ib.addEventListener("click",async()=>{if(!installPrompt)return;installPrompt.prompt();await installPrompt.userChoice;installPrompt=null;ib.hidden=true;});</script>
+</body>
+</html>
